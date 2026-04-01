@@ -53,7 +53,7 @@ export default function Navbar() {
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
           }}>⛓️</div>
           <span style={{ fontWeight: 700, fontSize: 18 }}>
-            Block<span style={{ color: 'var(--accent)' }}>Shop</span>
+            Ether<span style={{ color: 'var(--accent)' }}>Mart</span>
           </span>
         </Link>
 

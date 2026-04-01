@@ -1,14 +1,14 @@
 {
   "network": "ganache",
   "chainId": "1337",
-  "deployer": "0xB20D3dCffaf9ae4E757CecA4DBf80fD19D6b7a6a",
-  "deployedAt": "2026-03-29T14:35:10.626Z",
+  "deployer": "0x54b64C7342173cD9502BBE74749dD7E7Ac91F4e8",
+  "deployedAt": "2026-04-01T10:48:12.393Z",
   "contracts": {
     "BlockShopMarketplace": {
-      "address": "0x88575876dA37B3ffE1c259a2Af54fE07529D3EDF"
+      "address": "0xb91F2d0f7EDbFCDEc7e5F0c5BcAFfD007Aab9DD6"
     },
     "BlockShopToken": {
-      "address": "0x6A12d9534d9F48A445A87Fa51A5434e3CE2508aa",
+      "address": "0xD69419aAE199E0985e3A41EDF8fd48d933034C13",
       "symbol": "BST",
       "name": "BlockShop Token"
     }

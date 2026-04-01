@@ -54,7 +54,7 @@ export default function Dashboard() {
       <div className="empty-state">
         <div className="empty-icon">📊</div>
         <h3>Connect Your Wallet</h3>
-        <p style={{ color:'var(--text2)' }}>Connect MetaMask to view your BlockShop dashboard</p>
+        <p style={{ color:'var(--text2)' }}>Connect MetaMask to view your EtherMart dashboard</p>
         <button onClick={connect} className="btn btn-eth btn-lg" style={{ marginTop:8 }}>🦊 Connect MetaMask</button>
       </div>
     </div>
@@ -90,9 +90,9 @@ export default function Dashboard() {
           <div className="eth-price" style={{ fontSize:26, fontWeight:800 }}>{parseFloat(balance).toFixed(4)}</div>
         </div>
         <div>
-          <div style={{ fontSize:11, color:'var(--text3)', textTransform:'uppercase', letterSpacing:0.5, marginBottom:6 }}>BST Rewards</div>
+          <div style={{ fontSize:11, color:'var(--text3)', textTransform:'uppercase', letterSpacing:0.5, marginBottom:6 }}>EMT Rewards</div>
           <div style={{ fontSize:26, fontWeight:800, color:'var(--accent)' }}>{parseFloat(bstBalance).toFixed(2)}</div>
-          <div style={{ fontSize:11, color:'var(--text3)' }}>BlockShop Token</div>
+          <div style={{ fontSize:11, color:'var(--text3)' }}>EtherMart Token</div>
         </div>
       </div>
 
@@ -149,7 +149,7 @@ export default function Dashboard() {
             )}
             {tokenAddr && (
               <div>
-                <div style={{ fontSize:11, color:'var(--text3)', marginBottom:4 }}>BST Token</div>
+                <div style={{ fontSize:11, color:'var(--text3)', marginBottom:4 }}>EMT Token</div>
                 <div className="mono" style={{ fontSize:12, color:'var(--accent2)', wordBreak:'break-all' }}>{tokenAddr}</div>
               </div>
             )}

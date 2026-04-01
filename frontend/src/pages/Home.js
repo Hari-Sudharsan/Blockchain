@@ -99,15 +99,15 @@ export default function Home() {
       <section style={{ background:'var(--bg2)', padding:'64px 0', borderBottom:'1px solid var(--border)' }}>
         <div className="container">
           <div style={{ textAlign:'center', marginBottom:40 }}>
-            <h2 style={{ fontSize:28, marginBottom:10 }}>How BlockShop Works</h2>
+            <h2 style={{ fontSize:28, marginBottom:10 }}>How EtherMart Works</h2>
             <p style={{ color:'var(--text2)', fontSize:15 }}>Trustless commerce secured by Ethereum smart contracts</p>
           </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:20 }}>
             {[
-              { step:'01', icon:'🦊', title:'Connect Wallet',   desc:'Connect MetaMask or any Web3 wallet to get started. No signup, no email.' },
-              { step:'02', icon:'🛍️', title:'Browse & Buy',    desc:'Browse products and pay with ETH. Funds go to smart contract escrow — not the seller.' },
-              { step:'03', icon:'⛓️', title:'Escrow & Track',  desc:'Your ETH is locked in the smart contract. Seller ships. You track on-chain.' },
-              { step:'04', icon:'✅', title:'Confirm & Release',desc:'Confirm delivery. Smart contract auto-releases funds to seller. Get BST rewards.' },
+              { step:'01', icon:'🦊', title:'Connect Wallet',    desc:'Connect MetaMask or any Web3 wallet to get started. No signup, no email.' },
+              { step:'02', icon:'🛍️', title:'Browse & Buy',     desc:'Browse products and pay with ETH. Funds go to smart contract escrow — not the seller.' },
+              { step:'03', icon:'⛓️', title:'Escrow & Track',   desc:'Your ETH is locked in the smart contract. Seller ships. You track on-chain.' },
+              { step:'04', icon:'✅', title:'Confirm & Release', desc:'Confirm delivery. Smart contract auto-releases funds to seller. Get EMT rewards.' },
             ].map(({ step, icon, title, desc }) => (
               <div key={step} style={{ textAlign:'center', padding:'24px 16px' }}>
                 <div style={{ width:48, height:48, borderRadius:'50%', background:'rgba(99,102,241,0.1)', border:'2px solid rgba(99,102,241,0.3)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, margin:'0 auto 14px' }}>{icon}</div>
@@ -184,15 +184,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── BST Token Banner ─────────────────────── */}
+      {/* ── EMT Token Banner ─────────────────────── */}
       <section style={{ background:'linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(139,92,246,0.1) 100%)', border:'1px solid rgba(99,102,241,0.2)', margin:'0 24px 64px', borderRadius:20, padding:'48px 40px', textAlign:'center' }}>
         <div style={{ fontSize:48, marginBottom:16 }}>🪙</div>
-        <h2 style={{ fontSize:28, marginBottom:12 }}>Earn BST Rewards on Every Purchase</h2>
+        <h2 style={{ fontSize:28, marginBottom:12 }}>Earn EMT Rewards on Every Purchase</h2>
         <p style={{ fontSize:15, color:'var(--text2)', maxWidth:500, margin:'0 auto 28px' }}>
-          BlockShop Token (BST) is issued automatically on every completed order. Hold BST for platform governance and future benefits.
+          EtherMart Token (EMT) is issued automatically on every completed order. Hold EMT for platform governance and future benefits.
         </p>
         <div style={{ display:'flex', gap:12, justifyContent:'center', flexWrap:'wrap' }}>
-          <Link to="/products" className="btn btn-primary btn-lg">Start Earning BST</Link>
+          <Link to="/products" className="btn btn-primary btn-lg">Start Earning EMT</Link>
           {!account && <button onClick={connect} className="btn btn-eth btn-lg">🦊 Connect Wallet</button>}
         </div>
       </section>

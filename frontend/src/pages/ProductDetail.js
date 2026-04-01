@@ -61,31 +61,61 @@ export default function ProductDetail() {
   };
 
   const handleBuyNow = async () => {
-    if (!account) { connect(); return; }
-    if (!blockchainOnline) {
-      toast.error('Blockchain not connected. Start Ganache to buy on-chain.', { duration: 5000 });
-      return;
-    }
-    if (!shipping.trim()) { toast.error('Please enter a shipping address'); return; }
+  if (!account) { connect(); return; }
 
-    setBuying(true);
-    const tid = toast.loading('Initiating on-chain purchase…');
-    try {
-      const contract = await getMarketplace();
-      const cost = totalCostWei();
-      const tx = await contract.placeOrder(product.id, qty, shipping, { value: cost });
-      toast.loading(`Transaction sent: ${tx.hash.slice(0, 10)}…`, { id: tid });
-      const receipt = await tx.wait();
-      setLastTx(receipt.hash);
-      toast.success(`✅ Order placed on-chain!\nTx: ${receipt.hash.slice(0, 12)}…`, { id: tid, duration: 8000 });
-      productsAPI.getById(id).then(r => setProduct(r.data.product)).catch(() => {});
-    } catch (err) {
-      const msg = err.reason || err.message || 'Transaction failed';
-      toast.error(msg.length > 80 ? msg.slice(0, 80) + '…' : msg, { id: tid });
-    } finally {
-      setBuying(false);
-    }
-  };
+  if (!blockchainOnline) {
+    toast.error('Blockchain not connected. Start Ganache to buy on-chain.', { duration: 5000 });
+    return;
+  }
+
+  if (!shipping.trim()) {
+    toast.error('Please enter a shipping address');
+    return;
+  }
+
+  setBuying(true);
+  const tid = toast.loading('Initiating on-chain purchase…');
+
+  try {
+    const contract = await getMarketplace();
+
+    // ✅ FIX: correct value type (BigInt)
+    const cost = BigInt(product.priceWei) * BigInt(qty);
+
+    const tx = await contract.placeOrder(product.id, qty, shipping, {
+      value: cost
+    });
+
+    toast.loading(`Transaction sent: ${tx.hash.slice(0, 10)}…`, { id: tid });
+
+    const receipt = await tx.wait();
+
+    setLastTx(receipt.hash);
+
+    toast.success(
+      `✅ Order placed on-chain!\nTx: ${receipt.hash.slice(0, 12)}…`,
+      { id: tid, duration: 8000 }
+    );
+
+    productsAPI.getById(id)
+      .then(r => setProduct(r.data.product))
+      .catch(() => {});
+
+  } catch (err) {
+    console.error(err);
+
+    const msg =
+      err.reason ||
+      err?.error?.message ||
+      err.message ||
+      'Transaction failed';
+
+    toast.error(msg.length > 80 ? msg.slice(0, 80) + '…' : msg, { id: tid });
+
+  } finally {
+    setBuying(false);
+  }
+};
 
   if (loading) return (
     <div className="container" style={{ padding: '40px 24px' }}>

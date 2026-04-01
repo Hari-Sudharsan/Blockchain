@@ -26,40 +26,132 @@ export default function Cart() {
 
   const handleCheckout = async () => {
     if (!account) { connect(); return; }
-    if (!shipping.trim()) { toast.error('Enter a shipping address first'); return; }
-    if (!blockchainOnline) {
-      toast.error('Blockchain not connected (mock mode).\nStart Ganache for real transactions.', { duration: 5000 });
+
+    if (!shipping.trim()) {
+      toast.error('Enter a shipping address first');
       return;
     }
+
+    if (!blockchainOnline) {
+      toast.error('Blockchain not connected.\nStart Ganache.', { duration: 5000 });
+      return;
+    }
+
     if (!hasFunds) {
-      toast.error(`Insufficient ETH balance.\nNeed: ${parseFloat(totalEth).toFixed(4)} ETH\nHave: ${parseFloat(balance).toFixed(4)} ETH`);
+      toast.error(
+        `Insufficient ETH balance.\nNeed: ${parseFloat(totalEth).toFixed(4)} ETH\nHave: ${parseFloat(balance).toFixed(4)} ETH`
+      );
       return;
     }
 
     setBuying(true);
     const results = [];
+
     for (const item of items) {
       const tid = toast.loading(`Buying ${item.name}…`);
+
       try {
+        // ✅ FIX 1: Verify contract exists on current network before calling
         const contract = await getMarketplace();
-        const cost = (BigInt(item.priceWei.toString()) * BigInt(item.qty)).toString();
-        const tx = await contract.placeOrder(item.id, item.qty, shipping, { value: cost });
+        const provider = contract.runner.provider;
+        const contractAddress = await contract.getAddress();
+        const code = await provider.getCode(contractAddress);
+        if (code === '0x') {
+          throw new Error(
+            'Contract not found on this network. Redeploy: cd blockchain && npx hardhat run scripts/deploy.js --network ganache'
+          );
+        }
+
+        // ✅ FIX 2: Safely parse priceWei — localStorage stores strings,
+        //    ethers v6 returns BigInt; handle both gracefully
+        let priceWeiBig;
+        try {
+          priceWeiBig = BigInt(item.priceWei.toString());
+        } catch {
+          throw new Error(`Invalid priceWei for ${item.name}: "${item.priceWei}"`);
+        }
+
+        if (priceWeiBig === 0n) {
+          throw new Error(
+            `Price is zero for "${item.name}". Re-add the product to cart from the Products page.`
+          );
+        }
+
+        const qtyBig = BigInt(item.qty);
+        const cost   = priceWeiBig * qtyBig;
+
+        // ✅ FIX 3: Fetch live product price from contract and compare
+        //    to catch price mismatches that cause silent reverts
+        const liveProduct = await contract.getProduct(item.id);
+        const livePrice   = BigInt(liveProduct.priceWei.toString());
+        const liveCost    = livePrice * qtyBig;
+
+        if (liveCost !== cost) {
+          // Price changed since item was added to cart — use live price
+          console.warn(
+            `Price mismatch for "${item.name}": cart=${cost}, contract=${liveCost}. Using contract price.`
+          );
+        }
+
+        // ✅ FIX 4: Always use live contract price to avoid msg.value mismatch revert
+        const finalCost = liveCost;
+
+        // ✅ FIX 5: Verify stock is available before sending tx
+        if (BigInt(liveProduct.stock.toString()) < qtyBig) {
+          throw new Error(`Not enough stock for "${item.name}". Available: ${liveProduct.stock}`);
+        }
+
+        // ✅ FIX 6: Check buyer is not the seller (contract requires this)
+        if (liveProduct.seller.toLowerCase() === account.toLowerCase()) {
+          throw new Error(`You cannot buy your own product: "${item.name}"`);
+        }
+
+        const tx = await contract.placeOrder(
+          item.id,
+          item.qty,
+          shipping,
+          { value: finalCost }          // ← always uses live on-chain price
+        );
+
+        toast.loading(`Tx sent: ${tx.hash.slice(0, 10)}…`, { id: tid });
+
         const receipt = await tx.wait();
-        results.push({ name: item.name, txHash: receipt.hash, ok: true });
+
+        results.push({
+          name: item.name,
+          txHash: receipt.hash,
+          ok: true
+        });
+
         toast.success(`✅ ${item.name} ordered!`, { id: tid });
+
       } catch (err) {
-        const msg = err.reason || err.message || 'Failed';
-        results.push({ name: item.name, error: msg, ok: false });
-        toast.error(`${item.name}: ${msg.slice(0, 60)}`, { id: tid });
+        console.error(err);
+
+        const msg =
+          err.reason ||
+          err?.error?.message ||
+          err.message ||
+          'Transaction failed';
+
+        results.push({
+          name: item.name,
+          error: msg,
+          ok: false
+        });
+
+        toast.error(`${item.name}: ${msg.slice(0, 80)}`, { id: tid });
       }
     }
 
     setTxResults(results);
+
     if (results.every(r => r.ok)) {
       clearCart();
       toast.success('🎉 All orders placed on-chain!');
       setTimeout(() => navigate('/orders'), 2000);
     }
+
     setBuying(false);
   };
 
@@ -170,7 +262,7 @@ export default function Cart() {
             <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {txResults.map((r, i) => (
                 <div key={i} style={{ fontSize: 12, padding: '8px 10px', borderRadius: 8, background: r.ok ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${r.ok ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}` }}>
-                  {r.ok ? `✅ ${r.name}` : `❌ ${r.name}: ${(r.error || '').slice(0, 40)}`}
+                  {r.ok ? `✅ ${r.name}` : `❌ ${r.name}: ${(r.error || '').slice(0, 60)}`}
                   {r.txHash && <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--text3)', marginTop: 2 }}>Tx: {r.txHash.slice(0, 18)}…</div>}
                 </div>
               ))}

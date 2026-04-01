@@ -26,7 +26,7 @@ export const blockchainAPI = {
 
 // ── MetaMask / Web3 helpers ───────────────────
 export async function connectWallet() {
-  if (!window.ethereum) throw new Error('MetaMask not installed. Please install MetaMask to use BlockShop.');
+  if (!window.ethereum) throw new Error('MetaMask not installed. Please install MetaMask to use EtherMart.');
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
   return accounts[0];
 }

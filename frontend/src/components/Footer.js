@@ -16,7 +16,7 @@ export default function Footer() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
               <div style={{ width: 32, height: 32, borderRadius: 9, background: 'linear-gradient(135deg,var(--accent),var(--accent2))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>⛓️</div>
-              <span style={{ fontWeight: 700, fontSize: 17 }}>Block<span style={{ color: 'var(--accent)' }}>Shop</span></span>
+              <span style={{ fontWeight: 700, fontSize: 17 }}>Ether<span style={{ color: 'var(--accent)' }}>Mart</span></span>
             </div>
             <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.8, maxWidth: 260, marginBottom: 20 }}>
               The first fully decentralized marketplace. Buy and sell with ETH. No middlemen. Secured by smart contracts on Ethereum.
@@ -35,7 +35,7 @@ export default function Footer() {
               )}
               {tokenAddr && (
                 <div style={{ fontSize: 11, color: 'var(--text3)' }}>
-                  <span>BST Token: </span>
+                  <span>EMT Token: </span>
                   <span className="mono" style={{ color: 'var(--accent2)', fontSize: 10 }}>{shortenAddress(tokenAddr)}</span>
                 </div>
               )}
@@ -56,7 +56,7 @@ export default function Footer() {
           <div>
             <h4 style={{ fontSize: 13, fontWeight: 700, marginBottom: 16, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: 0.5 }}>Blockchain</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {[['Smart Contracts', '/contracts'], ['How It Works', '/how-it-works'], ['BST Token', '/token'], ['Dispute System', '/disputes'], ['Become a Seller', '/sell']].map(([l, to]) => (
+              {[['Smart Contracts', '/contracts'], ['How It Works', '/how-it-works'], ['EMT Token', '/token'], ['Dispute System', '/disputes'], ['Become a Seller', '/sell']].map(([l, to]) => (
                 <li key={l}><Link to={to} style={{ fontSize: 13, color: 'var(--text2)', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--accent)'} onMouseLeave={e => e.target.style.color = 'var(--text2)'}>{l}</Link></li>
               ))}
             </ul>
@@ -74,7 +74,7 @@ export default function Footer() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 0', flexWrap: 'wrap', gap: 12 }}>
-          <p style={{ fontSize: 12, color: 'var(--text3)' }}>© 2024 BlockShop. Powered by Ethereum. No cookies, no tracking, no middlemen.</p>
+          <p style={{ fontSize: 12, color: 'var(--text3)' }}>© 2024 EtherMart. Powered by Ethereum. No cookies, no tracking, no middlemen.</p>
           <div style={{ display: 'flex', gap: 6 }}>
             {['🔒 Audited', '⛓️ Ethereum', '🦊 MetaMask'].map(t => (
               <span key={t} style={{ fontSize: 11, color: 'var(--text3)', padding: '3px 8px', border: '1px solid var(--border)', borderRadius: 6 }}>{t}</span>

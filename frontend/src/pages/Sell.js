@@ -78,7 +78,7 @@ export default function Sell() {
     <div className="container" style={{ padding:'80px 24px' }}>
       <div className="empty-state">
         <div className="empty-icon">🏪</div>
-        <h3>Start Selling on BlockShop</h3>
+        <h3>Start Selling on EtherMart</h3>
         <p style={{ color:'var(--text2)', maxWidth:400 }}>Connect your wallet to list products directly on the Ethereum blockchain. No setup fees — only 2.5% on sales.</p>
         <button onClick={connect} className="btn btn-eth btn-lg" style={{ marginTop:8 }}>🦊 Connect MetaMask</button>
       </div>
@@ -87,7 +87,7 @@ export default function Sell() {
 
   return (
     <div className="container" style={{ padding:'40px 24px', maxWidth:700 }}>
-      <h1 style={{ fontSize:28, marginBottom:8 }}>Sell on BlockShop</h1>
+      <h1 style={{ fontSize:28, marginBottom:8 }}>Sell on EtherMart</h1>
       <p style={{ color:'var(--text2)', marginBottom:32, fontSize:15 }}>List your products directly on Ethereum. Payments held in escrow, released on delivery.</p>
 
       {/* Progress */}
