@@ -119,3 +119,4 @@ blockshop/
 
 The wallet balance is fetched directly from the Ganache node via `ethers.BrowserProvider` on every connect, and **auto-refreshes every 5 seconds** so it always stays accurate. No more 0 ETH display.
 
+# BLOCKCHAIN_ECOMMERCE
